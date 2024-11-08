@@ -1,4 +1,19 @@
+import json
+from typing import Callable, Dict
 
+
+def check_login_password(function: Callable[[], str], dict_data: Dict[str, Dict[str, str]])-> str:
+    login: str = input()
+    password: str = input()
+    found: bool = False
+
+    if login in dict_data.keys():
+        if dict_data[login].get("password") == password:
+            found = True
+    if found:
+        return function()
+    else:
+        raise PermissionError('Неверные логин или пароль!')
 
 def stub_write_recipe():
     return """Пример рецепта.
@@ -12,4 +27,9 @@ def stub_add_to_schedule():
 
 
 if __name__ == '__main__':
-    pass
+    file_path = "materials/users.json"
+    with open(file_path, 'r') as file:
+        data = json.load(file)
+
+    print(check_login_password(stub_write_recipe, data))
+    print(check_login_password(stub_add_to_schedule, data))

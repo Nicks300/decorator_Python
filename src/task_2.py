@@ -1,8 +1,20 @@
+import json
+from typing import Callable, Dict
 
+DICT_USERS: Dict = {}
 
-with ...
-    DICT_USERS = ...
+def check_login_password(function: Callable[[], str]):
+    global DICT_USERS
+    with open("materials/users.json", "r", encoding="utf-8") as file:
+        DICT_USERS = json.load(file)
+    login: str = input()
+    password: str = input()
 
+    if login not in DICT_USERS.keys() or DICT_USERS.get(login).get("password") != password:
+        raise PermissionError('Неверные логин или пароль!')
+    else:
+        print("Сигнал из функции")
+        return function
 
 def stub_write_recipe():
     return """Пример рецепта.
@@ -24,3 +36,8 @@ if __name__ == '__main__':
     print('-' * 50)
     print(stub_write_recipe())
     print(stub_add_to_schedule())
+
+    print(type(stub_write_recipe))
+    print(type(stub_add_to_schedule))
+
+
